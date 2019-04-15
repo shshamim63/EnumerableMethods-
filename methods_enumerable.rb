@@ -103,13 +103,16 @@ module Enumerable
         acc = yield(acc, nxt)
         nxt = self[index+1]
       end
+      acc
     end  
-    acc
   end
 
-  
+
 end
 
+def multiply_els(arr)
+  arr.my_inject{|a,b| a*b}
+end
 arr=[3,4,6,8,7]
 hash={a: 1, b: 2}
 
@@ -146,5 +149,9 @@ hash={a: 1, b: 2}
 
 # test = Proc.new { |i| i*i } 
 # print arr.my_map( &test)
-print arr.my_map { |i| i*i }
+# print arr.my_map { |i| i*i }
+
+# print arr.my_inject{|a,b| a+b}
+
+# print multiply_els(arr)
 
