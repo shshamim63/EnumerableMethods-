@@ -45,14 +45,52 @@ module Enumerable
         my_each { |v| return true if v.is_a?(pattern) }
       end
     else
-      my_each { |v|  v != nil ?  return true : return false }
+      my_each { |v|  v != nil ?  true : false }
     end
     false
   end
+
+  def my_none?(pattern = nil)
+    if block_given?
+      my_each { |v| return false if yield(v) }
+    elsif !pattern.nil?
+      if pattern.is_a?(Regexp)
+        my_each { |v| return false if pattern =~ v.to_s }
+      else
+        my_each { |v| return false if v.is_a?(pattern) }
+      end
+    else
+      my_each { |v|  return false if v }
+    end
+    true
+  end
+
+  def my_count(comp = nil)
+    res = 0
+    if block_given?
+      my_each { |v| res += 1 if yield(v) }
+    elsif !comp.nil?
+      my_each { |v| res += 1 if v == comp }
+    else
+      res = size
+    end
+    res
+  end
+
+  def my_map
+    res = []
+    return to_enum(__method__) unless block_given?
+
+    my_each { |v| res.push(yield v) }
+    res
+  end
+
+
 end
 
 arr=[3,4,6,8,7]
 hash={a: 1, b: 2}
+
 
 # TEST
 
@@ -71,4 +109,16 @@ hash={a: 1, b: 2}
 # print hash.my_all? { |k, v| v.is_a? Integer }
 # print hash.my_all?(/\d/)
 
-print [nil, false].my_any?
+# print arr.my_any?
+# print [1, 2, nil, 3, 5, 8, 9].my_any? { |v| v || v.nil? }
+# print arr.my_any?(/\d/)
+
+# print arr.my_none?
+# print [1, 2, nil, 3, 5, 8, 9].my_none? { |v| v || v.nil? }
+# print arr.my_none?(/\d/)
+
+# print arr.my_count
+# print arr.my_count(2)
+# print arr.my_count{ |x| x%2==0 }
+
+# print arr.my_map { |i| i*i } 
