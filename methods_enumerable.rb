@@ -77,20 +77,43 @@ module Enumerable
     res
   end
 
-  def my_map
+  def my_map(proc = nil)
     res = []
     return to_enum(__method__) unless block_given?
-
-    my_each { |v| res.push(yield v) }
+    if proc.nil? 
+      my_each { |v| res.push(yield v) }
+    else
+      my_each { |v| res.push(proc.call(v)) }
+    end
     res
   end
 
+  def my_inject(arg = nil)
+    acc ,nxt = nil , nil
+    if arg.nil?
+      acc = self[0]
+      nxt = self[1]
+    else
+      acc = arg
+      nxt = self[0]
+    end
 
+    if block_given?
+      my_each_with_index do |element, index|
+        acc = yield(acc, nxt)
+        nxt = self[index+1]
+      end
+    end  
+    acc
+  end
+
+  
 end
 
 arr=[3,4,6,8,7]
 hash={a: 1, b: 2}
 
+# print arr.my_inject(2){|a,b| a + b}
 
 # TEST
 
@@ -121,4 +144,7 @@ hash={a: 1, b: 2}
 # print arr.my_count(2)
 # print arr.my_count{ |x| x%2==0 }
 
-# print arr.my_map { |i| i*i } 
+# test = Proc.new { |i| i*i } 
+# print arr.my_map( &test)
+print arr.my_map { |i| i*i }
+
