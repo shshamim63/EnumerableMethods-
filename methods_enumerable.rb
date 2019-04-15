@@ -6,4 +6,6 @@ module Enumerable
   end
 end
 arr=[3,4,6,8,7]
-arr.my_each{|item| print "#{item} "}
+hash={a: 1, b: 2}
+arr.my_each{|item| puts item.to_s}
+hash.each{|item| puts item.to_s}
