@@ -89,19 +89,21 @@ module Enumerable
   end
 
   def my_inject(arg = nil)
-    acc ,nxt = nil , nil
+    acc ,nxt, start = nil , nil, nil
     if arg.nil?
       acc = self[0]
       nxt = self[1]
+      start = 1
     else
       acc = arg
       nxt = self[0]
+      start = 0
     end
 
     if block_given?
-      my_each_with_index do |element, index|
+      for i in start...self.size
         acc = yield(acc, nxt)
-        nxt = self[index+1]
+        nxt = self[i+1]
       end
       acc
     end  
@@ -151,7 +153,7 @@ hash={a: 1, b: 2}
 # print arr.my_map( &test)
 # print arr.my_map { |i| i*i }
 
-# print arr.my_inject{|a,b| a+b}
+print [1,2,3,4,5].my_inject{|a,b| a+b}
 
 # print multiply_els(arr)
 
