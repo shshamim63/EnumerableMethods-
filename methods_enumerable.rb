@@ -153,7 +153,7 @@ hash={a: 1, b: 2}
 # print arr.my_map( &test)
 # print arr.my_map { |i| i*i }
 
-print [1,2,3,4,5].my_inject{|a,b| a+b}
+#print [1,2,3,4,5].my_inject{|a,b| a+b}
 
 # print multiply_els(arr)
 
