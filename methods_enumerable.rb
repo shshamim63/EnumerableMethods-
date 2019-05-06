@@ -72,7 +72,7 @@ module Enumerable
     elsif !comp.nil?
       my_each { |v| res += 1 if v == comp }
     else
-      res = size
+      res = self.size
     end
     res
   end
